@@ -6,3 +6,9 @@ in Linux, FreeBSD, Cygwin, Mingw:
 	curl
 	pipe operator
 	sh
+
+Start the program by running
+
+./start.sh
+
+it will put output in out.txt and error messages in err.txt
