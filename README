@@ -1,0 +1,8 @@
+these scripts require posix commands, like found
+in Linux, FreeBSD, Cygwin, Mingw:
+	Awk
+	grep
+	perl
+	curl
+	pipe operator
+	sh
