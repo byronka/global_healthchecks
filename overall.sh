@@ -1,9 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 
 # how long to sleep between hitting up each machine.
-SLEEP_TIME=60s
+SLEEP_TIME=600s
 
-MACHINE_ARRAY=(
+MACHINE_ARRAY_PROD=(
+"cs03psndprd801" #production server
+"cs03psndprd800" #production server
+)
+
+MACHINE_ARRAY_DEV=(
 "cs01psnddev800" 
 "cs01psnddev810" 
 "cs01psnddev900" 
@@ -14,11 +19,32 @@ MACHINE_ARRAY=(
 "cs01psndtst910"
 )
 
-while true # loop forever
-do
-	for i in ${MACHINE_ARRAY[*]}
+function check_prod_report_server ()
+{
+	for i in ${MACHINE_ARRAY_PROD[*]}
 	do
 		# get the info page for Node on each machine, verify it's up and running
+		echo $(date) "checking $i"
+
+		REPORT_SERVER_INFO=$(./get_report_info.sh "http://$i:5000/report-server/info") 
+		echo $(date) $REPORT_SERVER_INFO
+		IS_NODE_UP=$(echo $REPORT_SERVER_INFO | grep -c "node version" )
+		if test $IS_NODE_UP -eq 0
+		then 
+			echo $(date) "is NodeJS down on $i?" 1>&2
+		fi
+
+		sleep $SLEEP_TIME
+	done
+}
+
+function check_dev_tst_report_servers()
+{
+	for i in ${MACHINE_ARRAY_DEV[*]}
+	do
+		# get the info page for Node on each machine, verify it's up and running
+
+		echo $(date) "checking $i"
 
 		REPORT_SERVER_INFO=$(./get_report_info.sh "http://$i:5000/report-server/info") 
 		echo $(date) $REPORT_SERVER_INFO
@@ -38,4 +64,12 @@ do
 		fi
 		sleep $SLEEP_TIME
 	done
+}
+
+while true # loop forever
+do
+  # the following are function calls.
+	check_prod_report_server
+	check_dev_tst_report_servers
+  echo "." 1>&2
 done

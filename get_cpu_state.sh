@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # the next line runs the mpstat command.  we send its error output
 # to /dev/null since it's moot for our purposes.  the last line is 

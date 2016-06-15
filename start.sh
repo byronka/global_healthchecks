@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # start the program, sending repetitive unimportant stuff to out.txt
 # and error messages (important stuff) to err.txt.  That way you can see
